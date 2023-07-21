@@ -94,13 +94,19 @@ public class NaiveAdditiveDecisionTree extends DenseLtrRanker implements Account
         private final Node right;
         private final int feature;
         private final float threshold;
+        private final int leftNodeId;
+        private final int rightNodeId;
+        private final int missingNodeId;
 
-        public Split(Node left, Node right, int feature, float threshold) {
-            this.left = Objects.requireNonNull(left);
-            this.right = Objects.requireNonNull(right);
-            this.feature = feature;
-            this.threshold = threshold;
-        }
+        public Split(Node left, Node right, int feature, float threshold, int leftNodeId, int rightNodeId, int missingNodeId) {
+             this.left = Objects.requireNonNull(left);
+             this.right = Objects.requireNonNull(right);
+             this.feature = feature;
+             this.threshold = threshold;
+             this.leftNodeId = leftNodeId;
+             this.rightNodeId = rightNodeId;
+             this.missingNodeId = missingNodeId;
+         }
 
         @Override
         public boolean isLeaf() {
@@ -111,14 +117,23 @@ public class NaiveAdditiveDecisionTree extends DenseLtrRanker implements Account
         public float eval(float[] scores) {
             Node n = this;
             while (!n.isLeaf()) {
-                assert n instanceof Split;
-                Split s = (Split) n;
-                if (s.threshold > scores[s.feature]) {
-                    n = s.left;
-                } else {
-                    n = s.right;
-                }
-            }
+                 assert n instanceof Split;
+                 Split s = (Split) n;
+                 if (Float.isNaN(scores[s.feature])) {
+                     if (s.missingNodeId == s.leftNodeId) {
+                         n = s.left;
+                     }
+                     else {
+                         n = s.right;
+                     }
+                 }
+                 else if (s.threshold > scores[s.feature]) {
+                     n = s.left;
+                 }
+                 else {
+                     n = s.right;
+                 }
+             }
             assert n instanceof Leaf;
             return n.eval(scores);
         }
