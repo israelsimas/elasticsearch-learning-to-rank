@@ -334,7 +334,7 @@ public class LoggingIT extends BaseIntegrationTest {
                                 "nesteddocs1",
                                 QueryBuilders.boolQuery().filter(QueryBuilders.termQuery("nesteddocs1.field1", "nestedvalue")),
                                 ScoreMode.None
-                        ).innerHit(new InnerHitBuilder())
+                        )
                 );
         sourceBuilder = new SearchSourceBuilder().query(query)
                 .fetchSource(false)
