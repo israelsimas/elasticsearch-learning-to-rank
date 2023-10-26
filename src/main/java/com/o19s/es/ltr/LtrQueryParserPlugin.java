@@ -75,6 +75,7 @@ import org.elasticsearch.client.internal.Client;
 import org.elasticsearch.cluster.metadata.IndexNameExpressionResolver;
 import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.cluster.routing.allocation.AllocationService;
+import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.cluster.service.ClusterService;
 import org.elasticsearch.core.CheckedFunction;
 import org.elasticsearch.xcontent.ParseField;
@@ -253,7 +254,8 @@ public class LtrQueryParserPlugin extends Plugin implements SearchPlugin, Script
                                                IndexNameExpressionResolver indexNameExpressionResolver,
                                                Supplier<RepositoriesService> repositoriesServiceSupplier,
                                                Tracer tracer,
-                                               AllocationService allocationService) {
+                                               AllocationService allocationService,
+                                               IndicesService indicesService) {
         clusterService.addListener(event -> {
             for (Index i : event.indicesDeleted()) {
                 if (IndexFeatureStore.isIndexStore(i.getName())) {

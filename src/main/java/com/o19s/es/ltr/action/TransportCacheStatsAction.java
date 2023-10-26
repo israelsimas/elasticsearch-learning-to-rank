@@ -48,7 +48,7 @@ public class TransportCacheStatsAction extends TransportNodesAction<CachesStatsN
                                         Caches caches) {
         super(CachesStatsAction.NAME, threadPool, clusterService, transportService,
             actionFilters, CachesStatsNodesRequest::new, CachesStatsNodeRequest::new,
-            ThreadPool.Names.MANAGEMENT, CachesStatsAction.CachesStatsNodeResponse.class);
+            ThreadPool.Names.MANAGEMENT);
         this.caches = caches;
     }
 
