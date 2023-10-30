@@ -17,7 +17,6 @@
 package com.o19s.es.ltr.utils;
 
 import com.o19s.es.ltr.ranker.LtrRanker;
-import org.elasticsearch.core.Assertions;
 import org.elasticsearch.common.CheckedSupplier;
 
 import java.util.Objects;
@@ -83,16 +82,13 @@ public final class Suppliers {
      * Simple wrapper to make sure we run on the same thread
      */
     public static class FeatureVectorSupplier extends MutableSupplier<LtrRanker.FeatureVector> {
-        private final long threadId = Assertions.ENABLED ? Thread.currentThread().getId() : 0;
 
         public LtrRanker.FeatureVector get() {
-            assert threadId == Thread.currentThread().getId();
             return super.get();
         }
 
         @Override
         public void set(LtrRanker.FeatureVector obj) {
-            assert threadId == Thread.currentThread().getId();
             super.set(obj);
         }
     }
